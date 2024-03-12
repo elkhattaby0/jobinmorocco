@@ -32,7 +32,7 @@ const Administrator = () => {
                     </ul>
                     <ul className="w-[100%] h-[15%] border- border-red-500 flex items-center ">
                         <form className="w-[100%]">
-                        <button className="flex justify-around  w-[80%] " onClick={()=> localStorage.setItem('info', JSON.stringify({'isAuth':false, 'data': 'Employer'})) }>
+                        <button className="flex justify-around  w-[80%] " onClick={()=> localStorage.setItem('info', JSON.stringify("")) }>
                             <img 
                                 src='https://cdn-icons-png.flaticon.com/512/1828/1828427.png' 
                                 alt='' 

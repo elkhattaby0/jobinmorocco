@@ -22,6 +22,14 @@ const Employer = () => {
                             />
                             <p className="font-bold text-[20px]">Review Applications</p>
                         </Link>
+                        <Link to='/my-post' className="flex justify-around  w-[60%] my-[20px]">
+                            <img 
+                                src='https://cdn-icons-png.flaticon.com/512/8617/8617729.png' 
+                                alt='' 
+                                className="h-[30px]  mx-[5px]"
+                            />
+                            <p className="font-bold text-[20px]">My Posts</p>
+                        </Link>
                         <Link to='/post-job' className="flex justify-around  w-[65%] my-[20px]">
                             <img 
                                 src='https://cdn-icons-png.flaticon.com/512/992/992651.png' 

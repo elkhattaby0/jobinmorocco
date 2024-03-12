@@ -30,7 +30,7 @@ const Home = () => {
                         <option>Region</option>
                         {
                             Region.map(n=> (
-                                <option value={n.name}>{n.name}</option>
+                                <option key={n.id} value={n.name}>{n.name}</option>
                             ))
                         }
                     </select>
@@ -40,7 +40,7 @@ const Home = () => {
                         <option>Job</option>
                         {
                             Job.map(n=> (
-                                <option value={n.name}>{n.name}</option>
+                                <option key={n.id} value={n.name}>{n.name}</option>
                             ))
                         }
                     </select>

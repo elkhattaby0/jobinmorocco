@@ -29,6 +29,14 @@ const JobSeeker = () => {
                             />
                             <p className="font-bold text-[20px]">Saved jobs</p>
                         </Link>
+                        <Link to='/CV' className="flex justify-around  w-[30%] my-[20px]">
+                            <img 
+                                src='https://cdn-icons-png.flaticon.com/512/8208/8208516.png' 
+                                alt='' 
+                                className="w-[25px] mx-[5px]"
+                            />
+                            <p className="font-bold text-[20px]">CV</p>
+                        </Link>
                         <Link to='/setting' className="flex justify-around  w-[53%] my-[20px]">
                             <img 
                                 src='https://cdn-icons-png.flaticon.com/512/3524/3524636.png' 

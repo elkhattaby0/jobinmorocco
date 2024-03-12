@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { SearchData } from "./data";
 import { Link } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { format } from 'date-fns';
 
 const Search = () => {
     const [accordions, setAccordion] = useState(SearchData); 
-
+    const selector = useSelector(state=> state.jim.jobs)
     const toggleAccordion = (accordionkey) => { 
         const updatedAccordions = accordions.map((accord) => { 
             if (accord.key === accordionkey) { 
@@ -46,6 +47,40 @@ const Search = () => {
                 )} 
         </div> 
         )
+    }
+
+    const Show = () => {
+        try {
+            return (
+                selector[0].map(n=> (
+                    <Link to='/Job-offer-Detail' key={n.id} className="w-[100%] bg-white text-gray-800 flex rounded-md border-2 cursor-pointer">
+                        <section 
+                            className="w-[20%] flex items-center justify-center"
+                        >
+                            <img
+                                src="https://www.dreamjob.ma/wp-content/uploads/2022/06/Alsa-Maroc-Emploi-Recrutement.png"
+                                alt=""
+                                className=" w-[90%] border-2 rounded-md"
+                            />
+                        </section>
+                        <section
+                            className="w-[80%] px-[20px] py-[20px] text-gray-800 text-[18px] "
+                        >
+                            <ul className="pl-[40px] leading-[40px] text-[15px]">
+                                <li className="leading-[25px] font-bold text-[18px]"><b>{n.title.toUpperCase()}.</b></li>
+                                <li>{format(new Date(n.created_at), 'yyyy-MM-dd')} | {n.company}</li>
+                                <li className="leading-[20px]">
+                                    {n.description}.
+                                </li>
+                                <li>Region: {n.region}</li>
+                            </ul>
+                        </section>
+                    </Link>
+                ))
+            )
+        } catch (error) {
+            
+        }
     }
 
     return (
@@ -89,29 +124,10 @@ const Search = () => {
                 ))}
                 </section>
                 <section className="w-[75%] ml-[10px]  rounded-md">
-                    <Link to='/Job-offer-Detail' className="w-[100%] bg-white text-gray-800 flex rounded-md border-2 cursor-pointer">
-                        <section 
-                            className="w-[20%] flex items-center justify-center"
-                        >
-                            <img
-                                src="https://www.dreamjob.ma/wp-content/uploads/2022/06/Alsa-Maroc-Emploi-Recrutement.png"
-                                alt=""
-                                className=" w-[90%] border-2 rounded-md"
-                            />
-                        </section>
-                        <section
-                            className="w-[80%] px-[20px] py-[20px] text-gray-800 text-[18px] "
-                        >
-                            <ul className="pl-[40px] leading-[40px] text-[15px]">
-                                <li className="leading-[25px] font-bold text-[18px]"><b>RECEVEZ PAR MAIL LES OFFRES D'EMPLOI QUI VOUS INTÉRESSENT.</b></li>
-                                <li>10-03-2024 | Alsa</li>
-                                <li className="leading-[20px]">
-                                    RECEVEZ PAR MAIL LES OFFRES D'EMPLOI QUI VOUS INTÉRESSENTRECEVEZ PAR MAIL LES OFFRES D'EMPLOI QUI VOUS INTÉRESSENTRECEVEZ PAR MAIL LES OFFRES D'EMPLOI QUI VOUS INTÉRESSENTRECEVEZ PAR MAIL LES OFFRES D'EMPLOI QUI VOUS INTÉRESSENTRECEVEZ PAR MAIL LES OFFRES D'EMPLOI QUI VOUS INTÉRESSENTRECEVEZ PAR MAIL LES OFFRES D'EMPLOI QUI VOUS INTÉRESSENTRECEVEZ PAR MAIL LES OFFRES D'EMPLOI QUI VOUS INTÉRESSENT.
-                                </li>
-                                <li>Region: Agadir</li>
-                            </ul>
-                        </section>
-                    </Link>
+                    {
+                        Show()
+                    }
+                    
                 </section>
             </div>
         </>

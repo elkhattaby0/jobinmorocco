@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SearchData } from "../../data";
+import { format } from 'date-fns';
+import { useSelector } from "react-redux";
 
 
 const ViewJob = () => {
     const [accordions, setAccordion] = useState(SearchData); 
+    const [ser, setSer] = useState('')
+    const [show, setShow] = useState()
+    const [checkedItems, setCheckedItems] = useState({});
+
+    const jobs = useSelector(state=> state.jim.jobs)
+
+    useEffect(()=> {setShow(jobs)}, [jobs])
 
     const toggleAccordion = (accordionkey) => { 
         const updatedAccordions = accordions.map((accord) => { 
@@ -37,7 +46,13 @@ const ViewJob = () => {
                         {
                             props.data.map((item)=> (
                                 <div key={item.id}>
-                                    <input type="checkbox" /> {item.name}
+                                    <input 
+                                        type="checkbox"
+                                        name={item.name}
+                                        onChange={(e)=> {
+                                            setCheckedItems(n=>({...n, name: e.target.name, type: e.target.checked })) 
+                                        }}
+                                    /> {item.name}
                                 </div>
                             ))
                         }
@@ -47,6 +62,54 @@ const ViewJob = () => {
         )
     } 
     
+    const Result = () => {
+        if(jobs.length > 0) 
+        {
+            return (
+                jobs[0].filter(n=>  n.title.toLowerCase().includes(ser.toLowerCase()) && (checkedItems.type ? n.job === checkedItems.name || n.language === checkedItems.name || n.region === checkedItems.name || n.contract === checkedItems.name || n.experience === checkedItems.name || n.educational === checkedItems.name : n)
+                )
+                .map(n=> (
+                    <div key={n.id} className="w-[100%] border-2 mb-[8px] rounded-md bg-white cursor-pointer p-[15px] leading-10">
+                        <span className="flex justify-between">
+                            <h1 className="font-bold">{n.title.toUpperCase()}</h1>
+                            <svg
+                                width="24px"
+                                height="24px"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                className=""
+                                onClick={(e) => {
+                                    const currentFill = e.target.getAttribute('fill');
+                                    const newFill = currentFill === 'black' ? 'none' : 'black';
+                                    e.target.setAttribute('fill', newFill);
+                                    alert(n.id)
+                                }}
+                            >
+                                <path
+                                    d="M5 22V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v19l-7-6.111z"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    fill="none"
+                                />
+                            </svg>
+
+
+    
+                        </span>
+                        <p>{format(new Date(n.created_at), 'yyyy-MM-dd')} | {n.company}</p>
+                        <p className="leading-5">
+                            {n.description}
+                        </p>
+                        <p>Region: {n.region}</p>
+                    </div>
+                ))
+            )
+        }
+    }
+
     return (
         <div
             className="w-[100%] h-[90%] flex items-center justify-center border- "
@@ -54,7 +117,7 @@ const ViewJob = () => {
             <div
                 className=" w-[90%] h-[100%] flex  items-left justify-center "
             >
-                <section className="w-[30%] h-[100%] bg-white rounded-md border-2" >
+                <form  className="w-[30%] h-[100%] bg-white rounded-md border-2" >
                 {accordions.map((accordion) => ( 
                     <Accordion 
                         key={accordion.key} 
@@ -64,7 +127,7 @@ const ViewJob = () => {
                         toggleAccordion={() => toggleAccordion(accordion.key)} 
                     /> 
                 ))}
-                </section>
+                </form>
                 <section className="w-[70%] ml-[10px] rounded-md">
                     <div
                         className="flex  justify-between w-[100%]"
@@ -73,6 +136,7 @@ const ViewJob = () => {
                             type="text"
                             placeholder="Search for Jobs"
                             className="h-[50px] w-[90%] rounded-xl px-[20px] border-2 border-gray-800 outline-none"
+                            onChange={(e)=> setSer(e.target.value)}
                         />
                         <button className="h-[50px] w-[50px] bg- border-2 border-gray-800 bg-red-500 rounded-[20%] flex justify-center items-center mb-[20px]">
                             <img
@@ -82,18 +146,9 @@ const ViewJob = () => {
                             />
                         </button>
                     </div>
-                    <div className="w-[100%] border-2 rounded-md bg-white cursor-pointer p-[15px] leading-10">
-                        <span className="flex justify-between">
-                            <h1 className="font-bold">Part Time Weekend Customer Support Representative</h1>
-                            <img src="https://cdn-icons-png.flaticon.com/512/5662/5662990.png" alt="" className="w-[23px] h-[24px]" />
-                        </span>
-                        <p>02.03.2024 | Alsa</p>
-                        <p className="leading-5">
-                            There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. 
-                        </p>
-                        <p>Region: Agadir</p>
-                        <button className="w-[150px] h-[35px] rounded-md text-gray-100 bg-red-500 flex items-center justify-center">To Apply</button>
-                    </div>
+                    {
+                        <Result />
+                    }
                 </section>
             </div>
         </div>

@@ -10,7 +10,6 @@ const SignIn = () => {
     const [data, setData] = useState({});
     const dispatch = useDispatch();
     
-
     const getData = (e) => {
         const name = e.target.name;
         const value = e.target.value;
@@ -33,12 +32,12 @@ const SignIn = () => {
 
         fetch("http://127.0.0.1:8000/api/login", requestOptions)
         .then((response) => response.json())
-        .then((result) => localStorage.setItem('info', JSON.stringify(result)))
+        .then((result) => {
+            dispatch(addAuth(result.type))
+            localStorage.setItem('info', JSON.stringify(result))
+        })
         .catch((error) => console.error(error));
-        
-        
 
-        
     }
 
     return (
@@ -69,7 +68,7 @@ const SignIn = () => {
                         type="text" 
                         className="w-[100%] h-[40px] px-[18px] rounded border-2 border-gray-700 outline-none"
                         name="email"
-                        value={data.email}
+                        value={data.email || ""}
                         onChange={getData}
                     />
                 </label>
@@ -82,7 +81,7 @@ const SignIn = () => {
                             type={txtPsw}
                             className="w-[90%] h-[40px] px-[18px] rounded outline-none" 
                             name="password"
-                            value={data.password}
+                            value={data.password || ""}
                             onChange={getData}   
                         />
                         <span className="w-[10%] h-[40px] bg-white flex items-center justify-center cursor-pointer"

@@ -1,5 +1,23 @@
+import { useEffect, useState } from "react";
+
 
 const ReviewApp = () => {
+    const [jobs, setJobs] = useState([]);
+
+    useEffect(()=> {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+            const requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+        fetch("http://127.0.0.1:8000/api/job", requestOptions)
+        .then((response) => response.json())
+        .then((result) => setJobs(result))
+        .catch((error) => console.error(error));
+    }, [jobs])
+
     return (
         <div className="border- w-[90%] flex flex-col items-center justify-center">
             <section
@@ -34,8 +52,8 @@ const ReviewApp = () => {
                         className="w-[80%] px-[20px] py-[20px] text-gray-800 text-[15px] leading-[25px]"
                     >
                         <ul>
-                            <li><b>Profile No. </b> 08277584</li>
-                            <li><b>Professional experience: </b> Experience between 2 years and 5 years</li>
+                            <li><b>Profile No. </b> 02024 code</li>
+                            <li><b>Professional experience: </b> n.experience</li>
                             <li><b>Sector of activity: </b> Public administration</li>
                             <li><b>Training: </b> Bac+2
                                 <ul className="pl-[40px] list-disc">
